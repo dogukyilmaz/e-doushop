@@ -1,4 +1,5 @@
 import React, { useCallback, useLayoutEffect, useState } from "react";
+import { Button, Container, Dropdown, DropdownButton, Row } from "react-bootstrap";
 
 enum THEMES {
   DARKLY = "darkly",
@@ -10,9 +11,9 @@ enum THEMES {
   COSMO = "cosmo",
 }
 
-const ThemeSelector: React.FC = ({ children }) => {
+const ThemeSelector: React.FC<any> = ({ children, darkMode, setDarkMode }) => {
   const [theme, setTheme] = useState<any>(localStorage.getItem("theme"));
-  const [isVisible, setVisible] = useState(false);
+  // const [darkMode, setDarkMode] = useState(false);
 
   const selectTheme = useCallback(() => {
     switch (theme) {
@@ -45,79 +46,64 @@ const ThemeSelector: React.FC = ({ children }) => {
     window.location.reload();
   };
 
+  const handleMode = () => {
+    setDarkMode(!darkMode);
+    localStorage.setItem("darkMode", (!darkMode).toString());
+  };
+
   return (
     <>
-      <div className="btn-group" role="group" aria-label="Button group with nested dropdown">
-        <button type="button" className="btn btn-danger">
-          {theme}
-        </button>
-        <div className="btn-group show" role="group">
-          <button
-            id="btnGroupDrop4"
-            type="button"
-            className="btn btn-danger dropdown-toggle"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="true"
-            onClick={() => setVisible(!isVisible)}
-          ></button>
-          <div
-            className={`dropdown-menu ${isVisible && "show"}`}
-            aria-labelledby="btnGroupDrop4"
-            style={{
-              position: "absolute",
-              transform: "translate3d(0px, 36px, 0px)",
-              top: 0,
-              left: 0,
-              willChange: "transform",
-            }}
-            x-placement="bottom-start"
-          >
-            <button
+      <Container fluid>
+        <Row>
+          <DropdownButton id="dropdown-basic-button" title={theme}>
+            <Dropdown.Item
               className={`dropdown-item ${theme === THEMES.DARKLY && "active"}`}
               onClick={() => handleTheme(THEMES.DARKLY)}
             >
               Darkly
-            </button>
-            <button
+            </Dropdown.Item>
+            <Dropdown.Item
               className={`dropdown-item ${theme === THEMES.MINTY && "active"}`}
               onClick={() => handleTheme(THEMES.MINTY)}
             >
               Minty
-            </button>
-            <button
+            </Dropdown.Item>
+            <Dropdown.Item
               className={`dropdown-item ${theme === THEMES.SIMPLEX && "active"}`}
               onClick={() => handleTheme(THEMES.SIMPLEX)}
             >
               Simplex
-            </button>
-            <button
+            </Dropdown.Item>
+            <Dropdown.Item
               className={`dropdown-item ${theme === THEMES.SKETCHY && "active"}`}
               onClick={() => handleTheme(THEMES.SKETCHY)}
             >
               Sketchy
-            </button>
-            <button
+            </Dropdown.Item>
+            <Dropdown.Item
               className={`dropdown-item ${theme === THEMES.LUX && "active"}`}
               onClick={() => handleTheme(THEMES.LUX)}
             >
               Lux
-            </button>
-            <button
+            </Dropdown.Item>
+            <Dropdown.Item
               className={`dropdown-item ${theme === THEMES.CYBORG && "active"}`}
               onClick={() => handleTheme(THEMES.CYBORG)}
             >
               Cyborg
-            </button>
-            <button
+            </Dropdown.Item>
+            <Dropdown.Item
               className={`dropdown-item ${theme === THEMES.COSMO && "active"}`}
               onClick={() => handleTheme(THEMES.COSMO)}
             >
               Cosmo
-            </button>
-          </div>
-        </div>
-      </div>
+            </Dropdown.Item>
+          </DropdownButton>
+          <Button variant={darkMode ? "dark" : "light"} onClick={handleMode}>
+            {darkMode ? "Light" : "Dark"}
+          </Button>
+        </Row>
+      </Container>
       {children}
     </>
   );
