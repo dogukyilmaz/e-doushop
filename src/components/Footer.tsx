@@ -1,9 +1,20 @@
 import React from "react";
+import { Col, Container, Row } from "react-bootstrap";
 
-interface Props {}
+interface FooterProps {
+  darkMode: boolean;
+}
 
-const Footer = (props: Props) => {
-  return <footer>Footer</footer>;
+const Footer: React.FC<FooterProps> = ({ darkMode }) => {
+  return (
+    <footer>
+      <Container>
+        <Row>
+          <Col className="text-center py-2">e-douShop 2020 &copy;</Col>
+        </Row>
+      </Container>
+    </footer>
+  );
 };
 
 export default Footer;
