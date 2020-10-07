@@ -6,6 +6,7 @@ import Header from "./components/Header";
 
 import ThemeSelector from "./components/ThemeSelector";
 import "./App.css";
+import Home from "./pages/Home";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
@@ -15,7 +16,7 @@ const App: React.FC = () => {
       <Header darkMode={darkMode} />
       <main className="App py-2">
         <Container>
-          <h1>e-douShop</h1>
+          <Home />
         </Container>
       </main>
       <Footer darkMode={darkMode} />
