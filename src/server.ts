@@ -11,8 +11,6 @@ const app: Application = express();
 
 app.use(cors());
 
-const PORT = 4500;
-
 app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 
 app.get("/api/v1/products", (req, res) => {
@@ -26,6 +24,8 @@ app.get("/api/v1/products/:id", (req, res) => {
   }, 2000);
 });
 
+const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
-  console.log(`[server]: Server is running at https://localhost:${PORT}`);
+  console.log(`[server]: Server is running in ${process.env.NODE_ENV} at https://localhost:${PORT}`);
 });
