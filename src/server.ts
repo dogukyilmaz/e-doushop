@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 dotenv.config();
 
-import { products } from "./data/products";
+import { products } from "data/products";
 import { Product } from "types";
-import { connectDB } from "./config/db";
+import { connectDB } from "config/db";
 
 connectDB();
 const app: Application = express();
