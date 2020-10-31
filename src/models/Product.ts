@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import Review, { IReview } from "./Review";
 
 export interface IProduct extends Document {
-  user: string;
+  user?: string;
   name: string;
   image: string;
   brand: string;
@@ -12,7 +12,7 @@ export interface IProduct extends Document {
   price: number;
   reviewCount: number;
   stockCount: number;
-  reviews: IReview[];
+  reviews?: IReview[] | null;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -29,7 +29,7 @@ const ProductSchema: Schema = new Schema(
     price: { type: Number, default: 0 },
     stockCount: { type: Number, default: 0 },
     reviewCount: { type: Number, default: 0 },
-    reviews: [Review],
+    reviews: [Review.schema],
   },
   {
     timestamps: true,

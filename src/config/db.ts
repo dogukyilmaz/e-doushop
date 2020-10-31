@@ -26,4 +26,5 @@ export const connectDB = async () => {
 export const disconnectDB = () => {
   if (!database) return;
   mongoose.disconnect();
+  console.log("[database]: Disconnected. ");
 };

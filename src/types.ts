@@ -1,12 +1,18 @@
+import { IReview } from "models/Review";
+
 export interface Product {
-  _id: string;
+  _id?: string;
   name: string;
   image: string;
   description: string;
   brand: string;
   category: string;
   price: number;
-  countInStock: number;
+  stockCount: number;
   rating: number;
-  numReviews: number;
+  reviewCount: number;
+  user?: string;
+  reviews?: IReview[] | null;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
