@@ -9,6 +9,7 @@ interface RatingProps {
 }
 
 const Rating: React.FC<RatingProps> = ({ value, text, color = "#f8e825", size }: any) => {
+  console.log(value, "rating");
   const fullStar = <IoIosStar color={color} size={size} />;
   const halfStar = <IoIosStarHalf color={color} size={size} />;
   const emptyStar = <IoIosStarOutline color={color} size={size} />;
