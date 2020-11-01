@@ -8,6 +8,7 @@ import { Product } from "types";
 import { connectDB } from "config/db";
 
 import productRoute from "routes/product";
+import { errorHandler, notFoundHandler } from "middlewares/error";
 
 connectDB();
 const app: Application = express();
@@ -19,6 +20,9 @@ app.use(cors());
 app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 
 app.use("/api/v1/products", productRoute);
+
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

@@ -16,7 +16,10 @@ export const getProducts = asyncHandler(async (req: Request, res: Response, next
 // @access        Public
 export const getSingleProduct = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const product = await Product.findById(req.params.id);
-  product
-    ? res.json({ success: true, data: product })
-    : res.status(404).json({ success: false, message: "Product not found." });
+  if (product) {
+    res.json({ success: true, data: product });
+  } else {
+    res.status(404);
+    throw new Error("Product not found.");
+  }
 });
