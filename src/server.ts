@@ -1,29 +1,24 @@
 import express, { Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import morgan from "morgan";
 dotenv.config();
 
-import { products } from "data/products";
 import { Product } from "types";
 import { connectDB } from "config/db";
 
+import productRoute from "routes/product";
+
 connectDB();
 const app: Application = express();
+
+process.env.NODE_ENV === "development" && app.use(morgan("dev"));
 
 app.use(cors());
 
 app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 
-app.get("/api/v1/products", (req, res) => {
-  res.json(products);
-});
-
-app.get("/api/v1/products/:id", (req, res) => {
-  const response = products.filter((prod: Product) => prod._id === req.params.id);
-  setTimeout(() => {
-    res.json(response);
-  }, 2000);
-});
+app.use("/api/v1/products", productRoute);
 
 const PORT = process.env.PORT || 5000;
 
