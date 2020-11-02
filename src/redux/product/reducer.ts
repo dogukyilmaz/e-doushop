@@ -1,29 +1,29 @@
 import * as productTypes from "redux/product/types";
 
-const initialProductState: productTypes.ProductState = {
+const initialProductList: productTypes.ProductListState = {
   products: [],
   isLoading: false,
   error: null,
 };
 
-export const productReducer = (
-  state = initialProductState,
-  action: productTypes.ProductActionTypes
-): productTypes.ProductState => {
+export const productListReducer = (
+  state = initialProductList,
+  action: productTypes.ProductListActionTypes
+): productTypes.ProductListState => {
   const { type, payload } = action;
 
   switch (type) {
-    case productTypes.PRODUCTS_LIST_REQUEST:
+    case productTypes.PRODUCT_LIST_REQUEST:
       return {
-        ...initialProductState,
+        ...initialProductList,
         isLoading: true,
       };
-    case productTypes.PRODUCTS_LIST_SUCCESS:
+    case productTypes.PRODUCT_LIST_SUCCESS:
       return {
-        ...initialProductState,
+        ...initialProductList,
         products: payload,
       };
-    case productTypes.PRODUCTS_LIST_FAIL:
+    case productTypes.PRODUCT_LIST_FAIL:
       return {
         ...state,
         isLoading: false,

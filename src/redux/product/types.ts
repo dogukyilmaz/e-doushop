@@ -1,10 +1,8 @@
-export const PRODUCTS_LIST_REQUEST = "PRODUCTS_LIST_REQUEST";
-export const PRODUCTS_LIST_SUCCESS = "PRODUCTS_LIST_SUCCESS";
-export const PRODUCTS_LIST_FAIL = "PRODUCTS_LIST_FAIL";
+export const PRODUCT_LIST_REQUEST = "PRODUCT_LIST_REQUEST";
+export const PRODUCT_LIST_SUCCESS = "PRODUCT_LIST_SUCCESS";
+export const PRODUCT_LIST_FAIL = "PRODUCT_LIST_FAIL";
 
-export const GET_SINGLE_PRODUCT = "GET_SINGLE_PRODUCT";
-
-export interface ProductState {
+export interface ProductListState {
   products?: Product[];
   isLoading?: boolean;
   error?: any;
@@ -37,16 +35,16 @@ export interface IReview {
 
 // Product Actions // PL for ProductList
 interface ProductListRequest {
-  type: typeof PRODUCTS_LIST_REQUEST;
+  type: typeof PRODUCT_LIST_REQUEST;
   payload?: null;
 }
 interface ProductListSuccess {
-  type: typeof PRODUCTS_LIST_SUCCESS;
+  type: typeof PRODUCT_LIST_SUCCESS;
   payload: Product[];
 }
 interface ProductListFail {
-  type: typeof PRODUCTS_LIST_FAIL;
+  type: typeof PRODUCT_LIST_FAIL;
   payload: any; //error interface later
 }
 
-export type ProductActionTypes = ProductListRequest | ProductListSuccess | ProductListFail;
+export type ProductListActionTypes = ProductListRequest | ProductListSuccess | ProductListFail;

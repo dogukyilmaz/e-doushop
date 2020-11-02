@@ -8,7 +8,7 @@ import Loader from "components/Loader";
 import Message from "components/Message";
 
 const Home: React.FC = () => {
-  const { products, isLoading, error } = useSelector((state: RootState) => state.product);
+  const { products, isLoading, error } = useSelector((state: RootState) => state.productList);
   const dispatch = useDispatch();
 
   useEffect(() => {
