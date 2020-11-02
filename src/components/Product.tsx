@@ -19,7 +19,7 @@ const Product = ({ product }: any) => {
           </Card.Title>
         </Link>
         <Card.Text as="div">
-          <Rating value={product.rating} text={`${product.numReviews} reviews`} color="orange" size={22} />
+          <Rating value={product.rating} text={`${product.reviewCount} reviews`} color="orange" size={22} />
         </Card.Text>
 
         <Card.Text as="h3">${product.price}</Card.Text>

@@ -1,40 +1,36 @@
 import React, { useEffect, useState } from "react";
-import Product from "../components/Product";
-import axios from "axios";
-import { useDispatch } from "react-redux";
 import { Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Product from "../components/Product";
 import { listProducts } from "redux/product/action";
-
-const BASE_URL = "http://localhost:4500/api/v1";
+import { RootState } from "redux/store";
+import Loader from "components/Loader";
+import Message from "components/Message";
 
 const Home: React.FC = () => {
-  const [products, setProducts] = useState<any>();
+  const { products, isLoading, error } = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // getProducts();
-    // console.log(products);
     dispatch(listProducts());
-  }, []);
-
-  const getProducts = async () => {
-    const { data, status } = await axios.get(`/api/v1/products`);
-    if (status === 200) {
-      setProducts(data.data);
-    }
-  };
+  }, [dispatch]);
 
   return (
     <>
       <h1>Latest Products:</h1>
-      <Row>
-        {products &&
-          products?.map((product: any) => (
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger" error={error} />
+      ) : (
+        <Row>
+          {products?.map((product: any) => (
             <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
               <Product product={product} />
             </Col>
           ))}
-      </Row>
+        </Row>
+      )}{" "}
     </>
   );
 };
