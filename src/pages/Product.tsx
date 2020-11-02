@@ -1,38 +1,32 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
 import { Button, Col, ListGroup, Row, Image, Card } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useParams } from "react-router-dom";
-import Rating from "../components/Rating";
+import Rating from "components/Rating";
 
-import { IProduct } from "./types";
+import { useDispatch, useSelector } from "react-redux";
+import { listProductDetails } from "redux/product/action";
+import { RootState } from "redux/store";
+import Loader from "components/Loader";
+import Message from "components/Message";
 
 interface Props {}
 
 const Product = () => {
   const [darkMode] = useState(localStorage.getItem("darkMode") === "true"); //refactor with redux later
-  const [product, setProduct] = useState<IProduct>();
-  const [loading, setLoading] = useState(true);
-
   const { id } = useParams<any>();
+  const { error, isLoading, product } = useSelector((state: RootState) => state.productDetail);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getProduct();
-  }, []);
+    dispatch(listProductDetails(id));
+  }, [dispatch, id]);
 
-  const getProduct = async () => {
-    const { data, status } = await Axios.get(`/api/v1/products/${id}`);
-    if (status === 200) {
-      setProduct(data.data);
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return <div>loading</div>;
-  }
-
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : error ? (
+    <Message variant="danger" error={error} />
+  ) : (
     <>
       <LinkContainer to="/">
         <Button variant={darkMode ? "light" : "dark"}>GO BACK</Button>

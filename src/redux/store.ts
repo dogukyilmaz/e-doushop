@@ -1,10 +1,11 @@
 import { applyMiddleware, createStore, combineReducers, Action, Middleware, Store } from "redux";
 import thunk, { ThunkAction, ThunkMiddleware } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { productListReducer } from "redux/product/reducer";
+import { productDetailsReducer, productListReducer } from "redux/product/reducer";
 
 const rootReducer = combineReducers({
   productList: productListReducer,
+  productDetail: productDetailsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
