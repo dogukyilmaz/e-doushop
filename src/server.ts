@@ -8,6 +8,7 @@ import { Product } from "types";
 import { connectDB } from "config/db";
 
 import productRoute from "routes/product";
+import usersRoute from "routes/users";
 import { errorHandler, notFoundHandler } from "middlewares/error";
 
 connectDB();
@@ -15,11 +16,13 @@ const app: Application = express();
 
 process.env.NODE_ENV === "development" && app.use(morgan("dev"));
 
+app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 
 app.use("/api/v1/products", productRoute);
+app.use("/api/v1/users", usersRoute);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
