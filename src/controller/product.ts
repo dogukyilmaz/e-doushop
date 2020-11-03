@@ -7,7 +7,7 @@ import Product from "models/Product";
 // @route         GET /api/v1/products
 // @access        Public
 export const getProducts = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  const products = await Product.find({});
+  const products = await Product.find({}).select("name _id image rating price reviewCount");
   res.json({ success: true, data: products });
 });
 
