@@ -15,15 +15,18 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "baseUrl": "./src",
+    "typeRoots": [
+      "src/types"
+    ],
     "paths": {
       "src/*": [
         "src/*"
       ],
     },
-    "rootDirs": [
-      ".",
-      "src"
-    ]
+    // "rootDirs": [
+    //   ".",
+    //   "src"
+    // ]
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
     // "lib": [],                             /* Specify library files to be included in the compilation. */
@@ -71,6 +74,6 @@
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   },
   "include": [
-    "src/**/*.ts", "src/data/seeder.ts"
+    "src/**/*.ts"
   ]
 }
