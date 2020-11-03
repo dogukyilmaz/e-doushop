@@ -25,7 +25,7 @@ const Message: React.FC<Message> = ({ error, variant = "info" }) => {
       dismissible
       onClose={() => setShow(false)}
       className="fluid"
-      style={{ position: "fixed", right: 50, top: 80 }}
+      style={{ position: "fixed", right: 50, top: 80, zIndex: 9999 }}
     >
       <Alert.Heading>{error.name}</Alert.Heading>
       <hr />

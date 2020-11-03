@@ -18,3 +18,13 @@ code {
 main {
   height: 80vh;
 }
+
+h1 {
+  font-size: 1.6em !important;
+  padding: 1rem 1rem;
+}
+
+h2 {
+  font-size: 1.2em !important;
+  padding: 0.1rem;
+}

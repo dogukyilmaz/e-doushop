@@ -9,6 +9,7 @@ import ThemeSelector from "./components/ThemeSelector";
 import "./App.css";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
+import Cart from "pages/Cart";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
@@ -21,6 +22,7 @@ const App: React.FC = () => {
           <Container>
             <Route exact path="/" component={Home} />
             <Route exact path="/product/:id" component={Product} />
+            <Route exact path="/cart/:id?" render={(props) => <Cart {...props} darkMode={darkMode} />} />
           </Container>
         </main>
         <Footer darkMode={darkMode} />

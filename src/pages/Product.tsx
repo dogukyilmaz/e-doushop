@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, ListGroup, Row, Image, Card } from "react-bootstrap";
+import { Button, Col, ListGroup, Row, Image, Card, Form } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Rating from "components/Rating";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -14,13 +14,19 @@ interface Props {}
 
 const Product = () => {
   const [darkMode] = useState(localStorage.getItem("darkMode") === "true"); //refactor with redux later
+  const [quantity, setQuantity] = useState(1);
   const { id } = useParams<any>();
+  const history = useHistory();
   const { error, isLoading, product } = useSelector((state: RootState) => state.productDetail);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(listProductDetails(id));
   }, [dispatch, id]);
+
+  const addCart = () => {
+    history.push(`/cart/${id}?qty=${quantity}`);
+  };
 
   return isLoading ? (
     <Loader />
@@ -58,15 +64,38 @@ const Product = () => {
                   </Col>
                 </Row>
               </ListGroup.Item>
-              {product!.stockCount > 0 && product!.stockCount < 6 && (
+              {/* TODO: remove 6 */}
+              {product.stockCount > 0 && product.stockCount < 6 && (
                 <ListGroup.Item>
                   <Row>
                     <Col>Last {product!.stockCount} item on stock.</Col>
                   </Row>
                 </ListGroup.Item>
               )}
+
+              {product.stockCount > 0 && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Qty</Col>
+                    <Col>
+                      <Form.Control
+                        as="select"
+                        value={quantity}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuantity(Number(e.target.value))}
+                      >
+                        {[...Array(product.stockCount).keys()].map((x: number) => (
+                          <option key={x + 1} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
+
               <ListGroup.Item>
-                <Button className="btn-block" disabled={product!.stockCount === 0}>
+                <Button className="btn-block" disabled={product!.stockCount === 0} onClick={addCart}>
                   {product!.stockCount > 0 ? "Add to Cart" : "Out of Stock"}
                 </Button>
               </ListGroup.Item>
