@@ -27,9 +27,9 @@ const Message: React.FC<Message> = ({ error, variant = "info" }) => {
       className="fluid"
       style={{ position: "fixed", right: 50, top: 80, zIndex: 9999 }}
     >
-      <Alert.Heading>{error.name}</Alert.Heading>
+      <Alert.Heading>{error.name || "Internal Server Error"}</Alert.Heading>
       <hr />
-      <p className="mb-0">{error.message}</p>
+      <p className="mb-0">{error.message || "Please try again later."}</p>
     </Alert>
   );
 };

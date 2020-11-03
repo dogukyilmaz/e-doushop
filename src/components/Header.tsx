@@ -1,14 +1,18 @@
 import React from "react";
-import { Navbar, Nav, Form, FormControl, Button, NavDropdown, Container } from "react-bootstrap";
+import { Navbar, Nav, Form, FormControl, Button, NavDropdown, Container, Badge } from "react-bootstrap";
 import { FiLogIn, FiShoppingCart } from "react-icons/fi";
+import { useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
+import { RootState } from "redux/store";
 
 interface HeaderProps {
   darkMode: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({ darkMode }) => {
+  const cartItemsCount = useSelector((state: RootState) => state.cart.items.length);
+
   return (
     <header>
       <Navbar bg={darkMode ? "dark" : "light"} variant={darkMode ? "dark" : "light"} expand="md" collapseOnSelect>
@@ -22,7 +26,19 @@ const Header: React.FC<HeaderProps> = ({ darkMode }) => {
               <LinkContainer to="/cart">
                 <Nav.Link className="align-middle">
                   <FiShoppingCart size={22} className="mr-2" />
-                  <span className="align-middle">Cart</span>
+                  {cartItemsCount > 0 && (
+                    <Badge
+                      as="sup"
+                      pill
+                      variant="danger"
+                      style={{
+                        marginLeft: -18,
+                        border: `2px solid ${darkMode ? "var(--dark)" : "var(--light)"}`,
+                      }}
+                    >
+                      {cartItemsCount}
+                    </Badge>
+                  )}
                 </Nav.Link>
               </LinkContainer>
               <LinkContainer to="/login">
