@@ -1,6 +1,8 @@
 import asyncHandler from "express-async-handler";
 import { NextFunction, Request, Response } from "express";
 
+import generateToken from "utils/generateToken";
+
 import User from "models/User";
 
 // @description   Auth & Return token
@@ -19,7 +21,7 @@ export const authUser = asyncHandler(async (req: Request, res: Response, next: N
         lastName: user.lastName,
         isAdmin: user.isAdmin,
         isSeller: user.isSeller,
-        token: null,
+        token: generateToken(user._id),
       },
     });
   } else {
