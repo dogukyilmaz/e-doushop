@@ -3,11 +3,12 @@ import React, { useEffect } from "react";
 import { Row, Col, Alert, ListGroup, Image, Button, FormControl, InputGroup, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
-import { addItemCart } from "redux/cart/action";
+import { addItemCart, removeItemCart } from "redux/cart/action";
 import { CartItem } from "redux/cart/types";
 import { RootState } from "redux/store";
 
 import { IoMdTrash, IoIosTrash } from "react-icons/io";
+import Loader from "components/Loader";
 
 interface Props {
   darkMode: boolean;
@@ -18,7 +19,7 @@ const Cart: React.FC<Props> = ({ darkMode }) => {
   const { search } = useLocation<any>();
   const { id } = useParams<any>();
 
-  const { items } = useSelector((state: RootState) => state.cart);
+  const { items, isLoading } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
 
   const qty: number = search ? Number(search.split("=")[1]) : 1;
@@ -36,7 +37,7 @@ const Cart: React.FC<Props> = ({ darkMode }) => {
   };
   const handleCartRemove = (item: CartItem) => {
     if (item.quantity === 1) {
-      // dispatch(removeItemCart(item.product));
+      dispatch(removeItemCart(item.product));
     } else {
       dispatch(addItemCart(item.product, item.quantity - 1));
     }
@@ -46,69 +47,67 @@ const Cart: React.FC<Props> = ({ darkMode }) => {
     history.push("/login?redirect=shipping");
   };
 
-  return items.length === 0 ? (
-    <>
-      <Message variant="warning" error={{ name: "Cart", message: "Your cart is empty." }} />
-      <Alert className="mt-5 text-center" variant="primary">
-        Your cart is empty now, please add items.
-        <br />
-        <Link to="/"> Continue to shopping.</Link>
-      </Alert>
-    </>
-  ) : (
+  return (
     <Row>
       <Col md={9}>
         <h1>Shopping Cart</h1>
-        <ListGroup variant="flush">
-          {items.map((item: CartItem) => (
-            <ListGroup.Item key={item.product}>
-              <Row>
-                <Col md={2}>
-                  <Image src={item.image} alt={item.name} fluid rounded />
-                </Col>
-                <Col md={3}>
-                  <Link to={`/product/${item.product}`}>{item.name}</Link>
-                </Col>
-                <Col md={2}>${item.price}</Col>
-                <Col md={3} className="d-flex">
-                  <Row>
-                    <InputGroup className="mb-4">
-                      <InputGroup.Prepend>
-                        <Button
-                          variant="outline-warning"
-                          style={{ borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }}
-                          disabled={item.quantity === 0}
-                          onClick={() => handleCartRemove(item)}
-                        >
-                          -
-                        </Button>
-                        <Button variant={darkMode ? "secondary" : "primary"} disabled>
-                          {item.quantity}
-                        </Button>
-                        <Button
-                          variant="outline-success"
-                          style={{ borderTopRightRadius: 10, borderBottomRightRadius: 10 }}
-                          disabled={item.quantity === item.stockCount}
-                          onClick={() => handleCartAdd(item)}
-                        >
-                          +
-                        </Button>
-                      </InputGroup.Prepend>
-                    </InputGroup>
-                  </Row>
-                </Col>
-                <Col md={2}>
-                  <Button
-                    variant="outline-danger"
-                    // onClick={() => dispatch(removeItemCart(item.product))}
-                  >
-                    <IoMdTrash size={20} />
-                  </Button>
-                </Col>
-              </Row>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
+        {isLoading ? (
+          <Loader />
+        ) : items.length === 0 ? (
+          <Alert className="text-center" variant="info">
+            Your cart is empty now, please add items.
+            <br />
+            <Link to="/"> Continue to shopping.</Link>
+          </Alert>
+        ) : (
+          <ListGroup variant="flush">
+            {items.map((item: CartItem) => (
+              <ListGroup.Item key={item.product}>
+                <Row>
+                  <Col md={2}>
+                    <Image src={item.image} alt={item.name} fluid rounded />
+                  </Col>
+                  <Col md={3}>
+                    <Link to={`/product/${item.product}`}>{item.name}</Link>
+                  </Col>
+                  <Col md={2}>${item.price}</Col>
+                  <Col md={3} className="d-flex">
+                    <Row>
+                      <InputGroup className="mb-4">
+                        <InputGroup.Prepend>
+                          <Button
+                            variant="outline-warning"
+                            style={{ borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }}
+                            disabled={item.quantity === 0}
+                            onClick={() => handleCartRemove(item)}
+                          >
+                            -
+                          </Button>
+                          <Button variant={darkMode ? "secondary" : "primary"} disabled>
+                            {item.quantity}
+                          </Button>
+                          <Button
+                            variant="outline-success"
+                            style={{ borderTopRightRadius: 10, borderBottomRightRadius: 10 }}
+                            disabled={item.quantity === item.stockCount}
+                            onClick={() => handleCartAdd(item)}
+                          >
+                            +
+                          </Button>
+                        </InputGroup.Prepend>
+                      </InputGroup>
+                    </Row>
+                  </Col>
+                  <Col md={2}>
+                    <Button variant="outline-danger" onClick={() => dispatch(removeItemCart(item.product))}>
+                      <IoMdTrash size={20} />
+                    </Button>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        )}
       </Col>
       <Col md={3}>
         <Card>

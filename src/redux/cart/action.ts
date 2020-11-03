@@ -22,17 +22,16 @@ export const addItemCart = (id: string, qty: number): AppThunk => async (
   });
 
   localStorage.setItem("cart-items", JSON.stringify(getState().cart.items));
+};
 
-  // try {
-  //   dispatchEvent({ type: cartTypes.PRODUCT_LIST_REQUEST });
-  //   const { data } = await Axios.get(`/api/v1/products`);
-  //   console.log(data, "action");
-  //   if (data.success) {
-  //     dispatchEvent({ type: cartTypes.PRODUCT_LIST_SUCCESS, payload: data.data });
-  //   } else {
-  //     dispatchEvent({ type: cartTypes.PRODUCT_LIST_FAIL, payload: data });
-  //   }
-  // } catch (error) {
-  //   dispatchEvent({ type: cartTypes.PRODUCT_LIST_FAIL, payload: error.response.data });
-  // }
+export const removeItemCart = (id: string): AppThunk => async (
+  dispatchEvent: Dispatch<cartTypes.CartActionTypes>,
+  getState
+) => {
+  dispatchEvent({
+    type: cartTypes.CART_REMOVE_ITEM,
+    payload: id,
+  });
+
+  localStorage.setItem("cart-items", JSON.stringify(getState().cart.items));
 };

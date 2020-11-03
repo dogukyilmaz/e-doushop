@@ -2,8 +2,6 @@ import * as cartTypes from "redux/cart/types";
 
 const initialCartState: cartTypes.CartState = {
   items: [],
-  isLoading: false,
-  error: null,
 };
 
 export const cartReducer = (state = initialCartState, action: cartTypes.CartActionTypes): cartTypes.CartState => {
@@ -15,12 +13,15 @@ export const cartReducer = (state = initialCartState, action: cartTypes.CartActi
       return {
         ...state,
         items: isExist
-          ? state.items.map((p: cartTypes.CartItem) => (p.product === payload.product ? payload : p))
+          ? state.items.map((item: cartTypes.CartItem) => (item.product === payload.product ? payload : item))
           : [...state.items, payload],
+      };
+    case cartTypes.CART_REMOVE_ITEM:
+      return {
+        ...state,
+        items: state.items.filter((item: cartTypes.CartItem) => item.product !== payload),
       };
     default:
       return { ...state };
-    // case cartTypes.CART_REMOVE_ITEM:
-    // case cartTypes.CART_FAIL:
   }
 };
