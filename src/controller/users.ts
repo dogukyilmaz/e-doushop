@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 
 import generateToken from "utils/generateToken";
 
-import User from "models/User";
+import User, { IUser } from "models/User";
 
 // @description   Auth & Return token
 // @route         POST /api/v1/users/login
@@ -22,6 +22,29 @@ export const authUser = asyncHandler(async (req: Request, res: Response, next: N
         isAdmin: user.isAdmin,
         isSeller: user.isSeller,
         token: generateToken(user._id),
+      },
+    });
+  } else {
+    res.status(401);
+    throw new Error("Invalid email or password.");
+  }
+});
+
+// @description   Get user profile
+// @route         GET /api/v1/users/profile
+// @access        Private
+export const getUserProfile = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const user = await User.findById(req.user?._id);
+
+  if (user) {
+    res.json({
+      success: true,
+      data: {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        isAdmin: user.isAdmin,
+        isSeller: user.isSeller,
       },
     });
   } else {

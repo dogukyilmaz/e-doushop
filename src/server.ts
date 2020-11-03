@@ -4,7 +4,6 @@ import cors from "cors";
 import morgan from "morgan";
 dotenv.config();
 
-import { Product } from "types";
 import { connectDB } from "config/db";
 
 import productRoute from "routes/product";
