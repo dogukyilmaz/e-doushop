@@ -1,5 +1,6 @@
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
 
+// TODO: Access & Refresh token
 const generateToken = (id: string) => {
   const secret: Secret = process.env.JWT_SECRET!;
   const options: SignOptions = {
