@@ -1,13 +1,14 @@
-import Axios from "axios";
 import { Dispatch } from "redux";
+import API from "utils/api";
 import * as cartTypes from "redux/cart/types";
 import { AppThunk } from "redux/store";
+import { setCartItems } from "utils/localStorage";
 
 export const addItemCart = (id: string, qty: number): AppThunk => async (
   dispatchEvent: Dispatch<cartTypes.CartActionTypes>,
   getState
 ) => {
-  const { data } = await Axios.get(`/api/v1/products/${id}`);
+  const { data } = await API.get(`/api/v1/products/${id}`);
 
   dispatchEvent({
     type: cartTypes.CART_ADD_ITEM,
@@ -21,7 +22,7 @@ export const addItemCart = (id: string, qty: number): AppThunk => async (
     },
   });
 
-  localStorage.setItem("cart-items", JSON.stringify(getState().cart.items));
+  setCartItems(getState().cart.items);
 };
 
 export const removeItemCart = (id: string): AppThunk => async (
@@ -33,5 +34,5 @@ export const removeItemCart = (id: string): AppThunk => async (
     payload: id,
   });
 
-  localStorage.setItem("cart-items", JSON.stringify(getState().cart.items));
+  setCartItems(getState().cart.items);
 };

@@ -1,5 +1,5 @@
-import Axios from "axios";
 import { Dispatch } from "redux";
+import API from "utils/api";
 import * as productTypes from "redux/product/types";
 import { AppThunk } from "redux/store";
 
@@ -7,7 +7,7 @@ import { AppThunk } from "redux/store";
 export const listProducts = (): AppThunk => async (dispatchEvent: Dispatch<productTypes.ProductListActionTypes>) => {
   try {
     dispatchEvent({ type: productTypes.PRODUCT_LIST_REQUEST });
-    const { data } = await Axios.get(`/api/v1/products`);
+    const { data } = await API.get(`/api/v1/products`);
 
     if (data.success) {
       dispatchEvent({ type: productTypes.PRODUCT_LIST_SUCCESS, payload: data.data });
@@ -25,7 +25,7 @@ export const listProductDetails = (id: string): AppThunk => async (
 ) => {
   try {
     dispatchEvent({ type: productTypes.PRODUCT_DETAILS_REQUEST });
-    const { data } = await Axios.get(`/api/v1/products/${id}`);
+    const { data } = await API.get(`/api/v1/products/${id}`);
 
     if (data.success) {
       dispatchEvent({ type: productTypes.PRODUCT_DETAILS_SUCCESS, payload: data.data });
