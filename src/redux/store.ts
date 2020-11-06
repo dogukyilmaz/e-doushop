@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore, combineReducers, Action, Middleware, Store } from "redux";
+import { applyMiddleware, createStore, combineReducers, Action, Middleware, Store, PreloadedState } from "redux";
 import thunk, { ThunkAction } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { productDetailsReducer, productListReducer } from "redux/product/reducer";
@@ -20,7 +20,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unk
 const cartItems = localStorage.getItem(LS_CART_ITEMS_VAR) ? JSON.parse(localStorage.getItem(LS_CART_ITEMS_VAR)!) : [];
 const token = localStorage.getItem(LS_TOKEN_VAR) ? JSON.parse(localStorage.getItem(LS_TOKEN_VAR)!) : null;
 
-const initialState = {
+const initialState: PreloadedState<RootState> = {
   cart: { items: cartItems },
   auth: { user: { ...token } }, // FIXME:
 };
