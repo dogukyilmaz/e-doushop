@@ -1,15 +1,17 @@
 import React, { ReactElement } from "react";
 import { Spinner } from "react-bootstrap";
 
-interface Props {}
+interface Props {
+  size?: number;
+}
 
-function Loader({}: Props): ReactElement {
+function Loader({ size = 50 }: Props): ReactElement {
   return (
     <Spinner
       animation="border"
       role="status"
       variant="warning"
-      style={{ width: 50, height: 50, margin: "auto", display: "block" }}
+      style={{ width: size, height: size, margin: "auto", display: "block" }}
     >
       <span className="sr-only">Loading...</span>
     </Spinner>

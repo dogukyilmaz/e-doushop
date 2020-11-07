@@ -8,7 +8,7 @@ export const addItemCart = (id: string, qty: number): AppThunk => async (
   dispatchEvent: Dispatch<cartTypes.CartActionTypes>,
   getState
 ) => {
-  const { data } = await API.get(`/api/v1/products/${id}`);
+  const { data } = await API.get(`/products/${id}`);
 
   dispatchEvent({
     type: cartTypes.CART_ADD_ITEM,

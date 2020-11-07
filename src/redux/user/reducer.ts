@@ -18,7 +18,7 @@ export const authReducer = (state = initialUser, action: userTypes.UserActionTyp
     case userTypes.USER_LOGIN_SUCCESS:
       return {
         ...initialUser,
-        user: payload,
+        user: { ...payload, isAuth: true },
       };
     case userTypes.USER_LOGIN_FAIL:
       return {

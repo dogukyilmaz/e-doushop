@@ -18,11 +18,11 @@ export type RootState = ReturnType<typeof rootReducer>;
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;
 
 const cartItems = localStorage.getItem(LS_CART_ITEMS_VAR) ? JSON.parse(localStorage.getItem(LS_CART_ITEMS_VAR)!) : [];
-const token = localStorage.getItem(LS_TOKEN_VAR) ? JSON.parse(localStorage.getItem(LS_TOKEN_VAR)!) : null;
+const token = localStorage.getItem(LS_TOKEN_VAR) ? localStorage.getItem(LS_TOKEN_VAR)! : "";
 
 const initialState: PreloadedState<RootState> = {
   cart: { items: cartItems },
-  auth: { user: { ...token } }, // FIXME:
+  auth: { user: { email: "", password: "", token } },
 };
 const middlewares: Middleware[] = [thunk];
 

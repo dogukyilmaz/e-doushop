@@ -38,7 +38,7 @@ interface UserFail {
 
 interface UserLogout {
   type: typeof USER_LOGOUT;
-  payload: null;
+  payload?: null;
 }
 
 export type UserActionTypes = UserRequest | UserSuccess | UserFail | UserLogout;
