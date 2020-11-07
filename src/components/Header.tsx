@@ -1,10 +1,11 @@
 import React from "react";
 import { Navbar, Nav, Form, FormControl, Button, NavDropdown, Container, Badge } from "react-bootstrap";
-import { FiLogIn, FiShoppingCart } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { FiLogIn, FiLogOut, FiShoppingCart, FiUser } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import { RootState } from "redux/store";
+import { logout } from "redux/user/action";
 
 interface HeaderProps {
   darkMode: boolean;
@@ -12,6 +13,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ darkMode }) => {
   const cartItemsCount = useSelector((state: RootState) => state.cart.items.length);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
 
   return (
     <header>
@@ -41,12 +44,29 @@ const Header: React.FC<HeaderProps> = ({ darkMode }) => {
                   )}
                 </Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/login">
-                <Nav.Link>
-                  <span className="align-middle">Login</span>
-                  <FiLogIn size={22} className="ml-1" />
-                </Nav.Link>
-              </LinkContainer>
+              {!user?.isAuth ? (
+                <LinkContainer to="/login">
+                  <Nav.Link>
+                    <span className="align-middle">Login</span>
+                    <FiLogIn size={22} className="ml-1" />
+                  </Nav.Link>
+                </LinkContainer>
+              ) : (
+                <>
+                  <LinkContainer to="/profile">
+                    <Nav.Link>
+                      <span className="align-middle">
+                        {user.firstName} {user.lastName}
+                      </span>
+                      <FiUser size={22} className="ml-1" />
+                    </Nav.Link>
+                  </LinkContainer>
+
+                  <Nav.Link onClick={() => dispatch(logout())}>
+                    <FiLogOut size={22} className="ml-1" /> <span className="align-middle">Logout</span>
+                  </Nav.Link>
+                </>
+              )}
               {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
