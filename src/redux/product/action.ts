@@ -15,7 +15,7 @@ export const listProducts = (): AppThunk => async (dispatchEvent: Dispatch<produ
       dispatchEvent({ type: productTypes.PRODUCT_LIST_FAIL, payload: data });
     }
   } catch (error) {
-    dispatchEvent({ type: productTypes.PRODUCT_LIST_FAIL, payload: error.response.data });
+    dispatchEvent({ type: productTypes.PRODUCT_LIST_FAIL, payload: error.response?.data });
   }
 };
 
@@ -33,6 +33,6 @@ export const listProductDetails = (id: string): AppThunk => async (
       dispatchEvent({ type: productTypes.PRODUCT_DETAILS_FAIL, payload: data });
     }
   } catch (error) {
-    dispatchEvent({ type: productTypes.PRODUCT_DETAILS_FAIL, payload: error.response.data });
+    dispatchEvent({ type: productTypes.PRODUCT_DETAILS_FAIL, payload: error.response?.data });
   }
 };

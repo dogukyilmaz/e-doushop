@@ -13,7 +13,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ darkMode }) => {
   const cartItemsCount = useSelector((state: RootState) => state.cart.items.length);
-  const { user } = useSelector((state: RootState) => state.auth);
+  const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
   return (
@@ -52,28 +52,20 @@ const Header: React.FC<HeaderProps> = ({ darkMode }) => {
                   </Nav.Link>
                 </LinkContainer>
               ) : (
-                <>
+                <NavDropdown title={`${user.firstName} ${user.lastName}`} id="basic-nav-dropdown">
                   <LinkContainer to="/profile">
-                    <Nav.Link>
-                      <span className="align-middle">
-                        {user.firstName} {user.lastName}
-                      </span>
-                      <FiUser size={22} className="ml-1" />
-                    </Nav.Link>
+                    <NavDropdown.Item>
+                      <FiUser size={22} className="ml-1" /> <span className="align-middle">Profile</span>
+                    </NavDropdown.Item>
                   </LinkContainer>
 
-                  <Nav.Link onClick={() => dispatch(logout())}>
+                  <NavDropdown.Divider />
+
+                  <NavDropdown.Item onClick={() => dispatch(logout())}>
                     <FiLogOut size={22} className="ml-1" /> <span className="align-middle">Logout</span>
-                  </Nav.Link>
-                </>
+                  </NavDropdown.Item>
+                </NavDropdown>
               )}
-              {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-            </NavDropdown> */}
             </Nav>
             {/* <Form inline>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" />

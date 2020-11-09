@@ -2,6 +2,9 @@ export const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST";
 export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
 export const USER_LOGIN_FAIL = "USER_LOGIN_FAIL";
 export const USER_LOGOUT = "USER_LOGOUT";
+export const USER_PROFILE_REQUEST = "USER_PROFILE_REQUEST";
+export const USER_PROFILE_SUCCESS = "USER_PROFILE_SUCCESS";
+export const USER_PROFILE_FAIL = "USER_PROFILE_FAIL";
 
 export interface UserState {
   user: User | null;
@@ -18,6 +21,7 @@ export interface User {
   isSeller?: boolean;
   token?: string;
   isAuth?: boolean;
+  _id?: string;
 }
 
 // User Actions
@@ -41,4 +45,25 @@ interface UserLogout {
   payload?: null;
 }
 
-export type UserActionTypes = UserRequest | UserSuccess | UserFail | UserLogout;
+interface UserProfileRequest {
+  type: typeof USER_PROFILE_REQUEST;
+  payload?: null;
+}
+
+interface UserProfileSuccess {
+  type: typeof USER_PROFILE_SUCCESS;
+  payload: User;
+}
+
+interface UserProfileFail {
+  type: typeof USER_PROFILE_FAIL;
+  payload: any;
+}
+export type UserActionTypes =
+  | UserRequest
+  | UserSuccess
+  | UserFail
+  | UserLogout
+  | UserProfileRequest
+  | UserProfileSuccess
+  | UserProfileFail;

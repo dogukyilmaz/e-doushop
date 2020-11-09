@@ -21,8 +21,8 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    token && dispatch(getProfile());
-  }, [token, dispatch]);
+    dispatch(getProfile());
+  }, [dispatch]);
 
   return (
     <ThemeSelector darkMode={darkMode} setDarkMode={setDarkMode}>
