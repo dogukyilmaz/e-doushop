@@ -28,6 +28,7 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
 
+    // TODO: validation
     dispatch(login(email, password));
   };
 
@@ -43,7 +44,7 @@ const Login = () => {
             <Form.Control
               type="email"
               placeholder="Enter email..."
-              value={email}
+              value={user?.email || email}
               autoFocus
               onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
