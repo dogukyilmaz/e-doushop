@@ -51,3 +51,29 @@ export const getProfile = (): AppThunk => async (dispatchEvent: Dispatch<userTyp
     dispatchEvent({ type: userTypes.USER_PROFILE_FAIL, payload: error.response?.data });
   }
 };
+
+export const register = (firstName: string, lastName: string, email: string, password: string): AppThunk => async (
+  dispatchEvent: Dispatch<userTypes.UserActionTypes>
+) => {
+  try {
+    dispatchEvent({
+      type: userTypes.USER_REGISTER_REQUEST,
+    });
+
+    const { data } = await API.post("/users", { firstName, lastName, email, password });
+    console.log(data, "reg");
+    dispatchEvent({
+      type: userTypes.USER_REGISTER_SUCCESS,
+      payload: data.data,
+    });
+
+    // dispatchEvent({
+    //   type: userTypes.USER_LOGIN_SUCCESS,
+    //   payload: data.data,
+    // });
+
+    setAuthToken(data.data.token);
+  } catch (error) {
+    dispatchEvent({ type: userTypes.USER_REGISTER_FAIL, payload: error.response?.data });
+  }
+};

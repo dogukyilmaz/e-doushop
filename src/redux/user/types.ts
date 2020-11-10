@@ -1,7 +1,13 @@
 export const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST";
 export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
 export const USER_LOGIN_FAIL = "USER_LOGIN_FAIL";
+
+export const USER_REGISTER_REQUEST = "USER_REGISTER_REQUEST";
+export const USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
+export const USER_REGISTER_FAIL = "USER_REGISTER_FAIL";
+
 export const USER_LOGOUT = "USER_LOGOUT";
+
 export const USER_PROFILE_REQUEST = "USER_PROFILE_REQUEST";
 export const USER_PROFILE_SUCCESS = "USER_PROFILE_SUCCESS";
 export const USER_PROFILE_FAIL = "USER_PROFILE_FAIL";
@@ -25,18 +31,33 @@ export interface User {
 }
 
 // User Actions
-interface UserRequest {
+interface UserLoginRequest {
   type: typeof USER_LOGIN_REQUEST;
   payload?: null;
 }
 
-interface UserSuccess {
+interface UserLoginSuccess {
   type: typeof USER_LOGIN_SUCCESS;
   payload: User;
 }
 
-interface UserFail {
+interface UserLoginFail {
   type: typeof USER_LOGIN_FAIL;
+  payload: any;
+}
+
+interface UserRegisterRequest {
+  type: typeof USER_REGISTER_REQUEST;
+  payload?: null;
+}
+
+interface UserRegisterSuccess {
+  type: typeof USER_REGISTER_SUCCESS;
+  payload: User;
+}
+
+interface UserRegisterFail {
+  type: typeof USER_REGISTER_FAIL;
   payload: any;
 }
 
@@ -60,9 +81,12 @@ interface UserProfileFail {
   payload: any;
 }
 export type UserActionTypes =
-  | UserRequest
-  | UserSuccess
-  | UserFail
+  | UserLoginRequest
+  | UserLoginSuccess
+  | UserLoginFail
+  | UserRegisterRequest
+  | UserRegisterSuccess
+  | UserRegisterFail
   | UserLogout
   | UserProfileRequest
   | UserProfileSuccess

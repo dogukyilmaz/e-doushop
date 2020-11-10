@@ -11,17 +11,20 @@ import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Cart from "pages/Cart";
 import Login from "pages/Login";
+import Register from "pages/Register";
 import { RootState } from "redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile } from "redux/user/action";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
-  const token = useSelector((state: RootState) => state.auth.user?.token);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProfile());
+    if (user?.token) {
+      dispatch(getProfile());
+    }
   }, [dispatch]);
 
   return (
@@ -31,7 +34,7 @@ const App: React.FC = () => {
         <main className="App py-2">
           <Container>
             <Route exact path="/login" component={Login} />
-            {/* <Route exact path="/register" component={Regoster} /> */}
+            <Route exact path="/register" component={Register} />
             <Route exact path="/" component={Home} />
             <Route exact path="/product/:id" component={Product} />
             <Route exact path="/cart/:id?">
