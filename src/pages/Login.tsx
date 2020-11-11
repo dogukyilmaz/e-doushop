@@ -14,7 +14,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const history = useHistory();
+  const history = useHistory<any>();
   const { search } = useLocation();
   const redirect = search ? search.split("=")[1] : "";
 
@@ -22,7 +22,9 @@ const Login = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    user?.token && history.push(redirect);
+    if (user?.token) {
+      history.push(history.location?.state?.from.pathname || "/");
+    }
   }, [history, user, redirect]);
 
   const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
