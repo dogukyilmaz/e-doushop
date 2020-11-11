@@ -6,6 +6,8 @@ const initialUser: userTypes.UserState = {
   error: null,
 };
 
+// TODO: change structure updating etc
+// FIXME: loading issue
 export const authReducer = (state = initialUser, action: userTypes.UserActionTypes): userTypes.UserState => {
   const { type, payload } = action;
 
@@ -13,20 +15,24 @@ export const authReducer = (state = initialUser, action: userTypes.UserActionTyp
     case userTypes.USER_LOGIN_REQUEST:
     case userTypes.USER_PROFILE_REQUEST:
     case userTypes.USER_REGISTER_REQUEST:
+    case userTypes.USER_PROFILE_UPDATE_REQUEST:
       return {
-        ...initialUser,
+        ...state,
         isLoading: true,
       };
     case userTypes.USER_LOGIN_SUCCESS:
     case userTypes.USER_PROFILE_SUCCESS:
     case userTypes.USER_REGISTER_SUCCESS:
+    case userTypes.USER_PROFILE_UPDATE_SUCCESS:
       return {
-        ...initialUser,
-        user: { ...payload, isAuth: true },
+        ...state,
+        isLoading: false,
+        user: { ...state.user, ...payload, isAuth: true },
       };
     case userTypes.USER_LOGIN_FAIL:
     case userTypes.USER_PROFILE_FAIL:
     case userTypes.USER_REGISTER_FAIL:
+    case userTypes.USER_PROFILE_UPDATE_FAIL:
       return {
         ...state,
         isLoading: false,

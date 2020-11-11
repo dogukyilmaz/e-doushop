@@ -12,6 +12,10 @@ export const USER_PROFILE_REQUEST = "USER_PROFILE_REQUEST";
 export const USER_PROFILE_SUCCESS = "USER_PROFILE_SUCCESS";
 export const USER_PROFILE_FAIL = "USER_PROFILE_FAIL";
 
+export const USER_PROFILE_UPDATE_REQUEST = "USER_PROFILE_UPDATE_REQUEST";
+export const USER_PROFILE_UPDATE_SUCCESS = "USER_PROFILE_UPDATE_SUCCESS";
+export const USER_PROFILE_UPDATE_FAIL = "USER_PROFILE_UPDATE_FAIL";
+
 export interface UserState {
   user: User | null;
   isLoading?: boolean;
@@ -80,6 +84,23 @@ interface UserProfileFail {
   type: typeof USER_PROFILE_FAIL;
   payload: any;
 }
+
+interface UserProfileUpdateRequest {
+  type: typeof USER_PROFILE_UPDATE_REQUEST;
+  payload?: null;
+}
+
+interface UserProfileUpdateSuccess {
+  type: typeof USER_PROFILE_UPDATE_SUCCESS;
+  payload: User;
+}
+
+interface UserProfileUpdateFail {
+  type: typeof USER_PROFILE_UPDATE_FAIL;
+  payload: any;
+}
+
+// FIXME: maybe seperate operations/actions
 export type UserActionTypes =
   | UserLoginRequest
   | UserLoginSuccess
@@ -90,4 +111,7 @@ export type UserActionTypes =
   | UserLogout
   | UserProfileRequest
   | UserProfileSuccess
-  | UserProfileFail;
+  | UserProfileFail
+  | UserProfileUpdateRequest
+  | UserProfileUpdateSuccess
+  | UserProfileUpdateFail;
