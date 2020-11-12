@@ -18,6 +18,7 @@ import { getProfile } from "redux/user/action";
 import Profile from "pages/Profile";
 import PrivateRoute from "components/PrivateRoute";
 import NotFound from "pages/404";
+import Shipping from "pages/Shipping";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
@@ -43,6 +44,7 @@ const App: React.FC = () => {
               <Route exact path="/product/:id" component={Product} />
 
               <PrivateRoute exact path="/profile" component={Profile} />
+              <PrivateRoute exact path="/shipping" component={Shipping} />
               <PrivateRoute exact path="/cart/:id?">
                 <Cart darkMode={darkMode} />
               </PrivateRoute>
