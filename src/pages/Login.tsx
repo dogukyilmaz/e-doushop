@@ -23,7 +23,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user?.token) {
-      history.push(history.location?.state?.from.pathname || "/");
+      history.push(redirect ? redirect : history.location?.state?.from.pathname || "/");
     }
   }, [history, user, redirect]);
 

@@ -3,9 +3,8 @@ import thunk, { ThunkAction } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { productDetailsReducer, productListReducer } from "redux/product/reducer";
 import { cartReducer } from "redux/cart/reducer";
-import { authReducer } from "./user/reducer";
-import { LS_TOKEN_VAR } from "utils/api";
-import { LS_CART_ITEMS_VAR } from "utils/localStorage";
+import { authReducer } from "redux/user/reducer";
+import { cartItems, address, token } from "utils/localStorage";
 
 const rootReducer = combineReducers({
   productList: productListReducer,
@@ -17,11 +16,8 @@ const rootReducer = combineReducers({
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;
 
-const cartItems = localStorage.getItem(LS_CART_ITEMS_VAR) ? JSON.parse(localStorage.getItem(LS_CART_ITEMS_VAR)!) : [];
-const token = localStorage.getItem(LS_TOKEN_VAR) ? localStorage.getItem(LS_TOKEN_VAR)! : "";
-
 const initialState: PreloadedState<RootState> = {
-  cart: { items: cartItems },
+  cart: { items: cartItems, shippingAddress: address },
   auth: { user: { email: "", password: "", token } },
 };
 const middlewares: Middleware[] = [thunk];
