@@ -34,9 +34,9 @@ const Product = () => {
     <Message variant="danger" error={error} />
   ) : (
     <>
-      <LinkContainer to="/">
-        <Button variant={darkMode ? "light" : "dark"}>GO BACK</Button>
-      </LinkContainer>
+      <Button variant={darkMode ? "light" : "dark"} onClick={() => history.goBack()}>
+        GO BACK
+      </Button>
       <Row>
         <Col md={6}>
           <Image src={product?.image} alt={product?.name} fluid />

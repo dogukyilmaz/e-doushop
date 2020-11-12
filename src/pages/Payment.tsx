@@ -29,7 +29,7 @@ const Payment = (props: Props) => {
     e.preventDefault();
 
     dispatch(savePaymentMethod(payMethod));
-    // history.push("/place_order");
+    history.push("/place_order");
   };
 
   return (
