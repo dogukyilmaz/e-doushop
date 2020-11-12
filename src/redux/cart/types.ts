@@ -2,11 +2,12 @@ export const CART_ADD_ITEM = "CART_ADD_ITEM";
 export const CART_REMOVE_ITEM = "CART_REMOVE_ITEM";
 
 export const CART_ADD_SHIPPING_ADDRESS = "CART_ADD_SHIPPING_ADDRESS";
-export const CART_REMOVE_SHIPPING_ADDRESS = "CART_REMOVE_SHIPPING_ADDRESS";
+export const CART_SAVE_PAYMENT_METHOD = "CART_SAVE_PAYMENT_METHOD";
 
 export interface CartState {
   items: CartItem[];
   shippingAddress?: ShippingAddress;
+  paymentMethod?: PaymentMethod;
   isLoading?: boolean;
   error?: any;
 }
@@ -27,6 +28,12 @@ export interface ShippingAddress {
   country: string;
 }
 
+export enum PaymentMethod {
+  PAYPAL = "PayPal",
+  STRIPE = "Stripe",
+  OTHER = "Other",
+}
+
 // Cart Actions
 interface CartItemAdd {
   type: typeof CART_ADD_ITEM;
@@ -43,9 +50,9 @@ interface CartAddShippingAddress {
   payload: ShippingAddress;
 }
 
-interface CartRemoveShippingAddress {
-  type: typeof CART_REMOVE_SHIPPING_ADDRESS;
-  payload?: string | any;
+interface CartSetPaymentMethod {
+  type: typeof CART_SAVE_PAYMENT_METHOD;
+  payload: PaymentMethod;
 }
 
-export type CartActionTypes = CartItemAdd | CartItemRemove | CartAddShippingAddress | CartRemoveShippingAddress;
+export type CartActionTypes = CartItemAdd | CartItemRemove | CartAddShippingAddress | CartSetPaymentMethod;

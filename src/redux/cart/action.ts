@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import API from "utils/api";
 import * as cartTypes from "redux/cart/types";
 import { AppThunk } from "redux/store";
-import { setCartItems, setShippingAddress } from "utils/localStorage";
+import { setCartItems, setShippingAddress, setPaymentMethod } from "utils/localStorage";
 
 export const addItemCart = (id: string, qty: number): AppThunk => async (
   dispatchEvent: Dispatch<cartTypes.CartActionTypes>,
@@ -46,4 +46,15 @@ export const saveShippingAddress = (address: cartTypes.ShippingAddress): AppThun
   });
 
   setShippingAddress(address);
+};
+
+export const savePaymentMethod = (method: cartTypes.PaymentMethod): AppThunk => async (
+  dispatchEvent: Dispatch<cartTypes.CartActionTypes>
+) => {
+  dispatchEvent({
+    type: cartTypes.CART_SAVE_PAYMENT_METHOD,
+    payload: method,
+  });
+
+  setPaymentMethod(method);
 };
