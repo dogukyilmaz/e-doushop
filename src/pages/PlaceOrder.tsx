@@ -8,19 +8,23 @@ import Loader from "components/Loader";
 import Message from "components/Message";
 import { saveShippingAddress } from "redux/cart/action";
 import PaymentSteps from "components/PaymentSteps";
-import { CartItem } from "redux/cart/types";
+import { CartItem, PaymentMethod } from "redux/cart/types";
 import { Image } from "react-bootstrap";
+import { createOrder } from "redux/order/action";
 
 const fixDecimal = (num: number) => {
   return (Math.round(num * 100) / 100).toFixed(2);
 };
 
 const PlaceOrder = () => {
-  const { items, paymentMethod, shippingAddress, isLoading, error } = useSelector((state: RootState) => state.cart);
   const [cartFee, setCartFee] = useState(0);
   const [taxCost, setTaxCost] = useState(0);
   const [shippingCost, setShippingCost] = useState(19.99);
   const [totalCost, setTotalCost] = useState(0);
+
+  const { items, paymentMethod, shippingAddress } = useSelector((state: RootState) => state.cart);
+  const { order, error, success, isLoading } = useSelector((state: RootState) => state.order);
+  const dispatch = useDispatch();
 
   const history = useHistory();
   if (items.length === 0) {
@@ -40,10 +44,29 @@ const PlaceOrder = () => {
     setTotalCost(Number((cartFee + taxCost + shippingCost).toFixed(2)));
   }, [taxCost]);
 
-  const handlePlaceOrder = () => {};
+  useEffect(() => {
+    if (success && !isLoading) {
+      history.push(`/orders/${order?._id}`);
+    }
+  }, [order, success, isLoading]);
+
+  const handlePlaceOrder = () => {
+    dispatch(
+      createOrder({
+        cartFee,
+        orderItems: items,
+        paymentMethod,
+        shippingPrice: shippingCost,
+        shippingAddress,
+        taxPrice: taxCost,
+        totalPrice: totalCost,
+      })
+    );
+  };
 
   return (
     <Container>
+      {error && <Message variant="danger" error={error} />}
       <PaymentSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
@@ -137,9 +160,18 @@ const PlaceOrder = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Button type="button" className="btn-block" disabled={items.length === 0} onClick={handlePlaceOrder}>
-                  Buy
-                </Button>
+                {isLoading ? (
+                  <Loader size={36} />
+                ) : (
+                  <Button
+                    type="button"
+                    className="btn-block"
+                    disabled={items.length === 0 || isLoading}
+                    onClick={handlePlaceOrder}
+                  >
+                    Buy
+                  </Button>
+                )}
               </ListGroup.Item>
             </ListGroup>
           </Card>

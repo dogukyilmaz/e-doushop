@@ -5,12 +5,14 @@ import { productDetailsReducer, productListReducer } from "redux/product/reducer
 import { cartReducer } from "redux/cart/reducer";
 import { authReducer } from "redux/user/reducer";
 import { cartItems, address, token, paymentMethod } from "utils/localStorage";
+import { orderReducer } from "./order/reducer";
 
 const rootReducer = combineReducers({
+  auth: authReducer,
   productList: productListReducer,
   productDetail: productDetailsReducer,
   cart: cartReducer,
-  auth: authReducer,
+  order: orderReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
