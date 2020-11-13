@@ -51,6 +51,8 @@ const ThemeSelector: React.FC<any> = ({ children, darkMode, setDarkMode }) => {
     localStorage.setItem("darkMode", (!darkMode).toString());
   };
 
+  // TODO: move profile
+  // TODO: refactor
   return (
     <>
       <Container fluid>
@@ -59,7 +61,7 @@ const ThemeSelector: React.FC<any> = ({ children, darkMode, setDarkMode }) => {
             className="btn-group"
             role="group"
             aria-label="Button group with nested dropdown"
-            style={{ position: "fixed", left: 0, top: 100, zIndex: 9999 }}
+            style={{ position: "fixed", left: 0, top: 300, zIndex: 9999 }}
           >
             <Button variant={darkMode ? "dark" : "light"} onClick={handleMode}>
               {darkMode ? "Light" : "Dark"}
