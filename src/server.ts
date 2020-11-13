@@ -8,6 +8,7 @@ import { connectDB } from "config/db";
 
 import productRoute from "routes/product";
 import usersRoute from "routes/users";
+import orderRoute from "routes/order";
 import { errorHandler, notFoundHandler } from "middlewares/error";
 
 connectDB();
@@ -22,6 +23,7 @@ app.get("/", (req, res) => res.send("Express + TypeScript Server"));
 
 app.use("/api/v1/products", productRoute);
 app.use("/api/v1/users", usersRoute);
+app.use("/api/v1/orders", orderRoute);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

@@ -3,11 +3,12 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IOrder extends Document {
   user: string;
   orderItems: OrderItem[];
-  shippingAdress: Address;
+  shippingAddress: Address;
   paymentMethod: PaymentMethod;
   taxPrice: number;
   shippingPrice: number;
   totalPrice: number;
+  cartFee: number;
   isPaid: boolean;
   paidAt: Date;
   isDelivered: boolean;
@@ -50,7 +51,7 @@ const OrderSchema: Schema = new Schema(
         product: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Product" },
       },
     ],
-    shippingAdress: {
+    shippingAddress: {
       address: { type: String, required: true },
       city: { type: String, required: true },
       zipcode: { type: String, required: true },
@@ -65,6 +66,7 @@ const OrderSchema: Schema = new Schema(
     taxPrice: { type: Number, default: 0.0 },
     shippingPrice: { type: Number, default: 0.0 },
     totalPrice: { type: Number, default: 0.0 },
+    cartFee: { type: Number, default: 0.0 },
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
     isDelivered: { type: Boolean, default: false },
