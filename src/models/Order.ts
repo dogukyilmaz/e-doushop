@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { IUser } from "./User";
 
 export interface IOrder extends Document {
-  user: string;
+  user: IUser;
   orderItems: OrderItem[];
   shippingAddress: Address;
   paymentMethod: PaymentMethod;

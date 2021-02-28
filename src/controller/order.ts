@@ -40,7 +40,9 @@ export const getSingleOrder = asyncHandler(async (req: Request, res: Response, n
     throw new Error("Order not found!");
   }
 
-  if (order.user !== req.user?._id) {
+  if (order.user._id.toString() !== req.user?._id.toString()) {
+    // console.log(order.user._id, "order.user._id");
+    // console.log(req.user?._id, "req.user?._id");
     res.status(401);
     throw new Error("Not authorized!");
   }
@@ -54,10 +56,10 @@ export const getSingleOrder = asyncHandler(async (req: Request, res: Response, n
 export const getAllOrders = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const orders = await Order.find({ user: req.user?._id }).populate("user", "name email");
 
-  if (!orders.length) {
-    res.status(404);
-    throw new Error("There is no order, yet.");
-  }
+  // if (!orders.length) {
+  //   res.status(404);
+  //   throw new Error("There is no order, yet.");
+  // }
 
   res.json({ success: true, data: orders });
 });
