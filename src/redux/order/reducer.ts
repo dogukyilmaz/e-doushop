@@ -2,6 +2,7 @@ import * as orderTypes from "redux/order/types";
 
 const initialOrderState: orderTypes.OrderState = {
   order: null,
+  lastOrderId: null,
   isLoading: false,
   error: null,
   userOrders: null,
@@ -19,10 +20,14 @@ export const orderReducer = (state = initialOrderState, action: orderTypes.Order
         isLoading: true,
       };
     case orderTypes.ORDER_CREATE_SUCCESS:
-    case orderTypes.ORDER_DETAILS_SUCCESS:
       return {
         ...initialOrderState,
         success: true,
+        lastOrderId: payload,
+      };
+    case orderTypes.ORDER_DETAILS_SUCCESS:
+      return {
+        ...initialOrderState,
         order: payload,
       };
     case orderTypes.GET_ALL_ORDERS_SUCCESS:

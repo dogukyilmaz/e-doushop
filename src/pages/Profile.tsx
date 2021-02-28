@@ -6,6 +6,8 @@ import { RootState } from "redux/store";
 import { register, updateProfile } from "redux/user/action";
 import Loader from "components/Loader";
 import Message from "components/Message";
+import { getAllOrders } from "redux/order/action";
+import { Order } from "redux/order/types";
 
 const Profile = () => {
   const [firstName, setFirstName] = useState("");
@@ -20,11 +22,16 @@ const Profile = () => {
   // const redirect = search ? search.split("=")[1] : "";
 
   const { isLoading, error, user } = useSelector((state: RootState) => state.auth);
+  const order = useSelector((state: RootState) => state.order);
   const dispatch = useDispatch();
 
   // useEffect(() => {
   //   user?.token && history.push(redirect);
   // }, [history, user, redirect]);
+
+  useEffect(() => {
+    dispatch(getAllOrders());
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
@@ -97,6 +104,9 @@ const Profile = () => {
         </Col>
         <Col md={8}>
           <h1>Orders</h1>
+          {order.userOrders?.length === 0
+            ? "No orders"
+            : order.userOrders?.map((order: Order, i: number) => <p>{order._id}</p>)}
         </Col>
       </Row>
     </>

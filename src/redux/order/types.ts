@@ -14,6 +14,7 @@ export const GET_ALL_ORDERS_FAIL = "GET_ALL_ORDERS_FAIL";
 
 export interface OrderState {
   order: Order | null;
+  lastOrderId?: string | null;
   isLoading?: boolean;
   error?: any;
   success?: boolean;

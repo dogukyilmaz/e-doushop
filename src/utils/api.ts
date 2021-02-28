@@ -2,7 +2,7 @@ import Axios, { AxiosRequestConfig } from "axios";
 
 const BASE_URL = "http://localhost:4500/api/v1";
 
-const REQUEST_TIMEOUT = 5000;
+const REQUEST_TIMEOUT = 10000;
 export const LS_TOKEN_VAR = "e-doushop-token";
 
 const config: AxiosRequestConfig = {

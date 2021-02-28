@@ -17,16 +17,14 @@ export const createOrder = (order: orderTypes.Order): AppThunk => async (
 
     dispatchEvent({
       type: orderTypes.ORDER_CREATE_SUCCESS,
-      payload: data.data,
+      payload: data.data._id,
     });
   } catch (error) {
     dispatchEvent({ type: orderTypes.ORDER_CREATE_FAIL, payload: error.response?.data });
   }
 };
 
-export const getOrderDetails = (id: string): AppThunk => async (
-  dispatchEvent: Dispatch<orderTypes.OrderActionTypes>
-) => {
+export const getOrder = (id: string): AppThunk => async (dispatchEvent: Dispatch<orderTypes.OrderActionTypes>) => {
   try {
     dispatchEvent({
       type: orderTypes.ORDER_DETAILS_REQUEST,

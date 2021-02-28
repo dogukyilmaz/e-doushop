@@ -21,6 +21,8 @@ import NotFound from "pages/404";
 import Shipping from "pages/Shipping";
 import Payment from "pages/Payment";
 import PlaceOrder from "pages/PlaceOrder";
+import OrderDetails from "pages/OrderDetails";
+import Orders from "pages/Orders";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
@@ -49,6 +51,8 @@ const App: React.FC = () => {
               <PrivateRoute exact path="/shipping" component={Shipping} />
               <PrivateRoute exact path="/payment" component={Payment} />
               <PrivateRoute exact path="/place_order" component={PlaceOrder} />
+              <PrivateRoute exact path="/orders/:id" component={OrderDetails} />
+              <PrivateRoute exact path="/orders" component={Orders} />
               <PrivateRoute exact path="/cart/:id?">
                 <Cart darkMode={darkMode} />
               </PrivateRoute>

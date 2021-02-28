@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FormContainer from "components/FormContainer";
 import { Button, Card, Col, Container, Form, ListGroup, Row } from "react-bootstrap";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/store";
 import Loader from "components/Loader";
@@ -10,82 +10,48 @@ import { saveShippingAddress } from "redux/cart/action";
 import PaymentSteps from "components/PaymentSteps";
 import { CartItem, PaymentMethod } from "redux/cart/types";
 import { Image } from "react-bootstrap";
-import { createOrder } from "redux/order/action";
+import { getOrder } from "redux/order/action";
 
-const fixDecimal = (num: number) => {
+const fixDecimal = (num: number = 0) => {
   return (Math.round(num * 100) / 100).toFixed(2);
 };
 
-const PlaceOrder = () => {
-  const [cartFee, setCartFee] = useState(0);
-  const [taxCost, setTaxCost] = useState(0);
-  const [shippingCost, setShippingCost] = useState(19.99);
-  const [totalCost, setTotalCost] = useState(0);
-
-  const { items, paymentMethod, shippingAddress } = useSelector((state: RootState) => state.cart);
-  const { order, error, success, isLoading, lastOrderId } = useSelector((state: RootState) => state.order);
+const Orders = () => {
+  const { id } = useParams<any>();
+  const { order, error, success, isLoading } = useSelector((state: RootState) => state.order);
   const dispatch = useDispatch();
 
   const history = useHistory();
-  if (items.length === 0) {
-    history.push("/");
-  }
 
   useEffect(() => {
-    setCartFee(Number(items.reduce((acc: number, item: CartItem) => acc + item.quantity * item.price, 0).toFixed(2)));
-  }, [items]);
+    dispatch(getOrder(id));
+  }, [dispatch, id]);
 
-  useEffect(() => {
-    setTaxCost(Number((cartFee * 0.18).toFixed(2)));
-    cartFee >= 5000 && setShippingCost(0);
-  }, [cartFee]);
-
-  useEffect(() => {
-    setTotalCost(Number((cartFee + taxCost + shippingCost).toFixed(2)));
-  }, [taxCost]);
-
-  useEffect(() => {
-    if (success && !isLoading) {
-      history.push(`/orders/${lastOrderId}`);
-    }
-  }, [lastOrderId, success, isLoading]);
-
-  const handlePlaceOrder = () => {
-    dispatch(
-      createOrder({
-        cartFee,
-        orderItems: items,
-        paymentMethod,
-        shippingPrice: shippingCost,
-        shippingAddress,
-        taxPrice: taxCost,
-        totalPrice: totalCost,
-      })
-    );
-  };
-
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : error ? (
+    <Message variant="danger" error={error} />
+  ) : (
     <Container>
-      {error && <Message variant="danger" error={error} />}
-      <PaymentSteps step1 step2 step3 step4 />
+      <h1>Order: {order?._id}</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2 className="text-warning">Shipping</h2>
               <p>
-                <small className="text-primary">Address: </small> {shippingAddress?.address}, {shippingAddress?.city},{" "}
-                {shippingAddress?.zipcode}, {shippingAddress?.country}
+                <small className="text-primary">Address: </small> {order?.shippingAddress?.address},{" "}
+                {order?.shippingAddress?.city}, {order?.shippingAddress?.zipcode}, {order?.shippingAddress?.country}
               </p>
             </ListGroup.Item>
             <ListGroup.Item>
               <h2 className="text-warning">Payment Method</h2>
-              <small className="text-primary">Method: </small> {paymentMethod}
+              <small className="text-primary">Method: </small> {order?.paymentMethod}
             </ListGroup.Item>
             <ListGroup.Item>
               <h2 className="text-warning">Products</h2>
               <ListGroup variant="flush">
-                {items.map((item: CartItem, i: number) => (
+                {order?.orderItems.map((item: CartItem, i: number) => (
                   <ListGroup.Item key={i}>
                     <Row>
                       <Col md={2}>
@@ -107,7 +73,7 @@ const PlaceOrder = () => {
                   <Col md={{ offset: 4 }}>
                     <h2 className="text-warning">Cart Total</h2>
                   </Col>
-                  <Col md={{ span: 3 }}>$ {cartFee}</Col>
+                  <Col md={{ span: 3 }}>$ {order?.cartFee}</Col>
                   <Col md={{ span: 1 }} />
                 </Row>
               </ListGroup>
@@ -126,7 +92,7 @@ const PlaceOrder = () => {
                   <Col>Products</Col>
                   <Col className="text-right">
                     <span style={{ float: "left", marginLeft: 30 }}>$ </span>
-                    <span> {fixDecimal(cartFee)}</span>
+                    <span> {fixDecimal(order?.cartFee)}</span>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -135,16 +101,16 @@ const PlaceOrder = () => {
                   <Col>Tax (18%)</Col>
                   <Col className="text-right">
                     <span style={{ float: "left", marginLeft: 30 }}>$ </span>
-                    <span> {fixDecimal(taxCost)}</span>
+                    <span> {fixDecimal(order?.taxPrice)}</span>
                   </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Row className={`text-${shippingCost === 0 ? "danger" : "info"}`}>
+                <Row className={`text-${order?.shippingPrice === 0 ? "danger" : "info"}`}>
                   <Col>Shipping</Col>
                   <Col className="text-right">
                     <span style={{ float: "left", marginLeft: 30 }}>$ </span>
-                    <span> {fixDecimal(shippingCost)}</span>
+                    <span> {fixDecimal(order?.shippingPrice)}</span>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -155,24 +121,24 @@ const PlaceOrder = () => {
                   </Col>
                   <Col className="text-right">
                     <span style={{ float: "left", marginLeft: 30 }}>$ </span>
-                    <span> {fixDecimal(totalCost)}</span>
+                    <span> {fixDecimal(order?.totalPrice)}</span>
                   </Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
+              {/* <ListGroup.Item>
                 {isLoading ? (
                   <Loader size={36} />
                 ) : (
                   <Button
                     type="button"
                     className="btn-block"
-                    disabled={items.length === 0 || isLoading}
-                    onClick={handlePlaceOrder}
+                    disabled={order?.orderItems.length === 0 || isLoading}
+                    // onClick={handlePlaceOrder}
                   >
                     Buy
                   </Button>
                 )}
-              </ListGroup.Item>
+              </ListGroup.Item> */}
             </ListGroup>
           </Card>
         </Col>
@@ -181,4 +147,4 @@ const PlaceOrder = () => {
   );
 };
 
-export default PlaceOrder;
+export default Orders;
